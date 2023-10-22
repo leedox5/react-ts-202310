@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { createContext, useEffect, useState } from "react";
 import Alert from "./components/Alert";
 import Button from "./components/Button";
 import ListGroup from "./components/ListGroup";
@@ -11,6 +11,10 @@ import Signup from "./pages/Signup";
 import { AppNavbar } from "./layout/AppNavbar";
 import axios from "axios";
 import Word from "./pages/Word";
+import Detail from "./pages/Detail";
+import Det from "./pages/Det";
+import { WordContext } from "./context/WordContext";
+import { confirmAlert } from "react-confirm-alert";
 
 function App() {
   const [alertVisible, setAlertVisibility] = useState(false);
@@ -56,14 +60,22 @@ function App() {
 
   return (
     <>
-      <AppNavbar />
-      <Routes>
-        <Route path="/" element={<Home words={words} />}></Route>
-        <Route path="/intro" element={<Intro />}></Route>
-        <Route path="/signin" element={<Signin />}></Route>
-        <Route path="/signup" element={<Signup />}></Route>
-        <Route path="/word" element={<Word />}></Route>
-      </Routes>
+      <WordContext.Provider value={{ words, loadWords }}>
+        <AppNavbar />
+        <Routes>
+          <Route path="/" element={<Home words={words} />}></Route>
+
+          <Route path="/intro" element={<Intro />}></Route>
+          <Route path="/signin" element={<Signin />}></Route>
+          <Route path="/signup" element={<Signup />}></Route>
+          <Route path="/det/:id" element={<Det />}></Route>
+          <Route
+            path="/detail/:id"
+            element={<Detail loadWords={loadWords} />}
+          ></Route>
+          <Route path="/word" element={<Word loadWords={loadWords} />}></Route>
+        </Routes>
+      </WordContext.Provider>
     </>
     /* ---
     <div>

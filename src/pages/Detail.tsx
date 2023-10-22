@@ -1,43 +1,22 @@
-import React, { useState } from "react";
 import axios from "axios";
-import { Link, useNavigate } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { Link, useNavigate, useParams } from "react-router-dom";
 
 interface Props {
   loadWords: () => void;
 }
 
-const Word = ({ loadWords }: Props) => {
-  let navigate = useNavigate();
-
+const Detail = ({ loadWords }: Props) => {
   const [wordForm, setWordForm] = useState({
     word: "",
     meaning: "",
   });
 
+  const { id } = useParams();
+
   const { word, meaning } = wordForm;
 
-  const handleClick = async (
-    e: React.MouseEvent<HTMLButtonElement, MouseEvent>
-  ) => {
-    e.preventDefault();
-    console.log(wordForm);
-    await axios.post("/api/word", wordForm);
-    loadWords();
-    navigate("/");
-  };
-
-  const handleClickCancel = (
-    e: React.MouseEvent<HTMLButtonElement, MouseEvent>
-  ) => {
-    e.preventDefault();
-    console.log("cancel clicked");
-  };
-  const handleChangeMeaning = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    setWordForm((prevState) => ({
-      ...prevState,
-      [e.target.id]: e.target.value,
-    }));
-  };
+  let navigate = useNavigate();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setWordForm((prevState) => ({
@@ -46,9 +25,35 @@ const Word = ({ loadWords }: Props) => {
     }));
   };
 
+  const handleChangeMeaning = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    setWordForm((prevState) => ({
+      ...prevState,
+      [e.target.id]: e.target.value,
+    }));
+  };
+
+  const handleClick = async (
+    e: React.MouseEvent<HTMLButtonElement, MouseEvent>
+  ) => {
+    e.preventDefault();
+    console.log(wordForm);
+    await axios.put("/api/word/" + id, wordForm);
+    loadWords();
+    navigate("/");
+  };
+
+  const fetchWord = async () => {
+    const result = await axios.get("/api/word/" + id);
+    setWordForm(result.data);
+  };
+
+  useEffect(() => {
+    fetchWord();
+  }, []);
+
   return (
     <div className="container my-3">
-      <h5 className="my-3 border-bottom pb-2">단어 등록</h5>
+      <h5 className="my-3 border-bottom pb-2">단어 수정</h5>
       <form className="post-form my-3">
         <div className="mb-2">
           <label htmlFor="word">단어</label>
@@ -89,4 +94,4 @@ const Word = ({ loadWords }: Props) => {
   );
 };
 
-export default Word;
+export default Detail;
