@@ -33,9 +33,16 @@ function App() {
   */
 
   const loadWords = async () => {
-    const result = await axios.get("/api/words");
-    console.log(result);
-    setWords(result.data);
+    try {
+      const result = await axios.get("/api/words");
+      console.log(result);
+      setWords(result.data);
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        console.log(error);
+        setMessage(error.message);
+      }
+    }
   };
 
   useEffect(() => {
@@ -63,7 +70,10 @@ function App() {
       <WordContext.Provider value={{ words, loadWords }}>
         <AppNavbar />
         <Routes>
-          <Route path="/" element={<Home words={words} />}></Route>
+          <Route
+            path="/"
+            element={<Home words={words} message={message} />}
+          ></Route>
 
           <Route path="/intro" element={<Intro />}></Route>
           <Route path="/signin" element={<Signin />}></Route>

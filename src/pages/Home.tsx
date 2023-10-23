@@ -9,19 +9,25 @@ interface Props {
     word: string;
     meaning: string;
   }[];
+  message: string;
 }
 
-const Home = ({ words }: Props) => {
+const Home = ({ words, message }: Props) => {
   return (
     <Container className="my-2">
-      <Table>
-        <Thead></Thead>
-        <tbody>
-          {words.map((word) => (
-            <WordItem key={word.id} {...word}></WordItem>
-          ))}
-        </tbody>
-      </Table>
+      {message.length > 0 && (
+        <div className="alert alert-danger">{message}</div>
+      )}
+      {message.length == 0 && (
+        <Table>
+          <Thead></Thead>
+          <tbody>
+            {words.map((word) => (
+              <WordItem key={word.id} {...word}></WordItem>
+            ))}
+          </tbody>
+        </Table>
+      )}
     </Container>
   );
 };

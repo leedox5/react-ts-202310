@@ -4,10 +4,16 @@ import { Modal, Button } from "react-bootstrap";
 interface Props {
   showModal: boolean;
   hideModal: () => void;
-  confirmModal: () => void;
+  confirmModal: (id: number) => void;
+  id: number;
 }
 
-const DeleteConfirmation = ({ showModal, hideModal, confirmModal }: Props) => {
+const DeleteConfirmation = ({
+  showModal,
+  hideModal,
+  confirmModal,
+  id,
+}: Props) => {
   const message = "삭제하시겠습니까?";
 
   return (
@@ -27,7 +33,7 @@ const DeleteConfirmation = ({ showModal, hideModal, confirmModal }: Props) => {
         <Button variant="default" onClick={hideModal}>
           Cancel
         </Button>
-        <Button variant="danger" onClick={() => confirmModal()}>
+        <Button variant="danger" onClick={() => confirmModal(id)}>
           Delete
         </Button>
       </Modal.Footer>
