@@ -178,7 +178,7 @@ const Det = () => {
                 </div>
               </div>
             </Collapse>
-            <Collapse in={!colArr[idx]} key={(idx + 1) * 10}>
+            <Collapse in={!colArr[idx]} key={memo.id}>
               <Card>
                 <Card.Body className="mb-2">
                   <textarea

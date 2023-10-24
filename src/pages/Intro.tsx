@@ -14,6 +14,8 @@ const Intro = () => {
     memos: memoType[];
   };
 
+  const [isLoading, setIsLoading] = useState(true);
+
   const [wordForm, setWordForm] = useState<wordFormType>({
     word: "",
     meaning: "",
@@ -21,8 +23,9 @@ const Intro = () => {
   });
 
   const fetchWord = async () => {
-    const result = await axios.get("/api/word/3");
+    const result = await axios.get("/api/word/1");
     setWordForm(result.data);
+    setIsLoading(false);
   };
 
   const { word, meaning, memos } = wordForm;
@@ -30,6 +33,10 @@ const Intro = () => {
   useEffect(() => {
     fetchWord();
   }, []);
+
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
 
   return (
     <>
